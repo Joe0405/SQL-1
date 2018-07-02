@@ -1,0 +1,314 @@
+create table Note(note_id int(5), note_title varchar(50), note_content varchar(50),note_status varchar(50), note_creation_date DATE);
+mysql> select * from Note;                                                      +---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       1 | Assignment1 |  step1       |  Done       | 2018-06-10         |
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       3 | Assignment3 |  step3       | Not Done    | 2018-06-20         |
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+
+create table Category(category_id int(5), category_name varchar(50),category_descr varchar(50),category_creation_date DATE,category_creator varchar(50);
+mysql> select * from Category;
++-------------+---------------+-----------------+------------------------+------------------+
+| category_id | category_name | category_descr  | category_creation_date | category_creator |
++-------------+---------------+-----------------+------------------------+------------------+
+|           1 | ASAP          | Immediate       | 2018-06-01             | Joe              |
+|           2 | High          | High Priority   | 2018-06-01             | Sharoon          |
+|           3 | Medium        | Medium Priority | 2018-06-01             | Aakash           |
+|           4 | Low           | Low Priority    | 2018-06-01             | Rajat            |
++-------------+---------------+-----------------+------------------------+------------------+
+4 rows in set (0.00 sec)
+
+create table Reminder(reminder_id int(5), reminder_name varchar(50), reminder_descr varchar(50),reminder_type varchar(30), reminder_creation_date DATE, reminder_creator varchar(50));
+mysql> select * from Reminder;
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name    | reminder_descr       | reminder_type | reminder_creation_date | reminder_creator |
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+|           1 | Email            | Send Email           | E-mail        | 2018-06-12             | Joe              |
+|           2 | Recharge         | Recahrge Phone       | Bills         | 2018-06-12             | Rajat            |
+|           3 | Electricity Bill | Pay Electricity Bill | Bills         | 2018-06-15             | Sharoon          |
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+3 rows in set (0.00 sec)
+
+create table User(user_id int(5), user_name varchar(50), user_added_date DATE, user_password varchar(50), user_mobile  int(10));
+mysql> select * from User;
++---------+-----------+-----------------+---------------+-------------+
+| user_id | user_name | user_added_date | user_password | user_mobile |
++---------+-----------+-----------------+---------------+-------------+
+|       1 | Joe       | 2010-04-05      | joe1234       | 9742335502  |
+|       2 | Rajat     | 2012-06-06      | rajat1234     | 9742335332  |
+|       3 | Sharoon   | 2014-12-05      | sharoon1234   | 9745635332  |
+|       4 | Aakash    | 2017-09-05      | aakash1234    | 9456667332  |
++---------+-----------+-----------------+---------------+-------------+
+4 rows in set (0.00 sec)
+
+*Fetch the row from User table based on Id and Password.
+  select * from User where user_name = 'Joe' and user_password = 'joe1234';
++---------+-----------+-----------------+---------------+-------------+
+| user_id | user_name | user_added_date | user_password | user_mobile |
++---------+-----------+-----------------+---------------+-------------+
+|       1 | Joe       | 2010-04-05      | joe1234       | 9742335502  |
++---------+-----------+-----------------+---------------+-------------+
+1 row in set (0.00 sec)
+
+*Fetch all the rows from Note table based on the field note_creation_date.
+ select * from Note where note_creation_date >= '2018-06-15';
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       3 | Assignment3 |  step3       | Not Done    | 2018-06-20         |
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+4 rows in set (0.00 sec)
+
+*Fetch all the Categories created after the particular Date.
+ select * from Category where category_creation_date >= '2018-06-01';
++-------------+---------------+-----------------+------------------------+------------------+
+| category_id | category_name | category_descr  | category_creation_date | category_creator |
++-------------+---------------+-----------------+------------------------+------------------+
+|           1 | ASAP          | Immediate       | 2018-06-01             | Joe              |
+|           2 | High          | High Priority   | 2018-06-01             | Sharoon          |
+|           3 | Medium        | Medium Priority | 2018-06-01             | Aakash           |
+|           4 | Low           | Low Priority    | 2018-06-01             | Rajat            |
++-------------+---------------+-----------------+------------------------+------------------+
+4 rows in set (0.01 sec)
+
+*Fetch all the Note ID from UserNote table for a given User.
+create table UserNote(user_id integer, note_id integer, foreign key(user_id) references User(user_id), foreign key(note_id) references Note(note_id));
+
++---------+---------+
+| user_id | note_id |
++---------+---------+
+|       1 |       1 |
+|       1 |       2 |
+|       1 |       5 |
+|       2 |       2 |
+|       3 |       4 |
++---------+---------+
+
+Select * from UserNote where user_id = 1;
++---------+---------+
+| user_id | note_id |
++---------+---------+
+|       1 |       1 |
+|       1 |       2 |
+|       1 |       5 |
++---------+---------+
+3 rows in set (0.00 sec)
+
+
+*Write Update query to modify particular Note for the given note Id.
+update Note set note_status = 'Done' where note_id = 3;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Note;
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       1 | Assignment1 |  step1       |  Done       | 2018-06-10         |
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       3 | Assignment3 |  step3       | Done        | 2018-06-20         |
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+*Fetch all the Notes from the Note table by a particular User.
+select * from Note where note_id in (select note_id from UserNote where user_id =1);
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       1 | Assignment1 |  step1       |  Done       | 2018-06-10         |
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+3 rows in set (0.00 sec)
+
+*Fetch all the Notes from the Note table for a particular Category.
+create table NoteCategory(note_id int(5), category_id int(5), foreign key(note_id) references Note(note_id), foreign key(category_id) references Category(Category_id));
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> select * from NoteCategory;
++---------+-------------+
+| note_id | category_id |
++---------+-------------+
+|       4 |           1 |
+|       5 |           1 |
++---------+-------------+
+2 rows in set (0.00 sec)
+
+
+Select * from Note where note_id in (Select note_id from NoteCategory where category_id =1);
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+2 rows in set (0.00 sec)
+
+*Fetch all the reminder details for a given note id.
+mysql> create table NoteReminder(note_id int(5), reminder_id int(5), foreign key(note_id) references Note(note_id), foreign key(reminder_id) references Reminder(reminder_id));
+Query OK, 0 rows affected (0.54 sec)
+
+mysql> Select * from NoteReminder;
++---------+-------------+
+| note_id | reminder_id |
++---------+-------------+
+|       5 |           3 |
++---------+-------------+
+1 row in set (0.00 sec)
+
+Select * from Reminder where reminder_id in (Select reminder_id from NoteReminder where note_id =5);
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name    | reminder_descr       | reminder_type | reminder_creation_date | reminder_creator |
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+|           3 | Electricity Bill | Pay Electricity Bill | Bills         | 2018-06-15             | Sharoon          |
++-------------+------------------+----------------------+---------------+------------------------+------------------+
+1 row in set (0.00 sec)
+
+*Fetch the reminder details for a given reminder id.
+
+mysql> select * from Reminder where reminder_id = 2;
++-------------+---------------+----------------+---------------+------------------------+------------------+
+| reminder_id | reminder_name | reminder_descr | reminder_type | reminder_creation_date | reminder_creator |
++-------------+---------------+----------------+---------------+------------------------+------------------+
+|           2 | Recharge      | Recahrge Phone | Bills         | 2018-06-12             | Rajat            |
++-------------+---------------+----------------+---------------+------------------------+------------------+
+1 row in set (0.00 sec)
+
+*Write a query to create a new Note from particular User (Use Note and UserNote tables - insert statement).
+
+insert into UserNote values(1,6);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> Select * from UserNote;
++---------+---------+
+| user_id | note_id |
++---------+---------+
+|       1 |       1 |
+|       1 |       2 |
+|       1 |       5 |
+|       2 |       2 |
+|       3 |       4 |
+|       1 |       6 |
++---------+---------+
+6 rows in set (0.00 sec)
+
+mysql> Insert into Note values(6,'Assignment6','step6','Not Done', '2018-07-01') ;
+Query OK, 1 row affected (0.03 sec)
+
+*Write a query to create a new Note from particular User to particular Category(Use Note and NoteCategory tables - insert statement)
+
+mysql> select * from NoteCategory;
++---------+-------------+
+| note_id | category_id |
++---------+-------------+
+|       4 |           1 |
+|       5 |           1 |
+|       6 |           1 |
++---------+-------------+
+3 rows in set (0.00 sec)
+
+Insert into Note values(6,'Assignment6','step6','Not Done', '2018-07-01') ;
+Query OK, 1 row affected (0.03 sec)
+
+*Write a query to set a reminder for a particular note (Use Reminder and NoteReminder tables - insert statement)
+
+mysql> select * from NoteReminder;
++---------+-------------+
+| note_id | reminder_id |
++---------+-------------+
+|       5 |           3 |
+|       4 |           4 |
++---------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into Reminder values(4,'Assignment','Finish Assignment','HomeWork','2018-06-28','Vikram');
+Query OK, 1 row affected (0.04 sec)
+
+*Write a query to delete particular Note added by a User(Note and UserNote tables - delete statement)
+
+mysql> delete from Note where note_id in (select note_id from UserNote where user_id =1 and note_id =6);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> Select * from UserNote;
++---------+---------+
+| user_id | note_id |
++---------+---------+
+|       1 |       1 |
+|       1 |       2 |
+|       1 |       5 |
+|       2 |       2 |
+|       3 |       4 |
+|       1 |       6 |
++---------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Note;
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       1 | Assignment1 |  step1       |  Done       | 2018-06-10         |
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       3 | Assignment3 |  step3       | Done        | 2018-06-20         |
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+*Write a query to delete particular Note from particular Category(Note and NoteCategory tables - delete statement)
+
+mysql> select * from Note;
++---------+-------------+--------------+-------------+--------------------+
+| note_id | note_title  | note_content | note_status | note_creation_date |
++---------+-------------+--------------+-------------+--------------------+
+|       1 | Assignment1 |  step1       |  Done       | 2018-06-10         |
+|       2 | Assignment2 |  step2       |  Done       | 2018-06-15         |
+|       3 | Assignment3 |  step3       | Done        | 2018-06-20         |
+|       4 | Assignment4 |  step4       | Not Done    | 2018-06-25         |
+|       5 | Assignment5 |  step5       | Not Done    | 2018-06-30         |
++---------+-------------+--------------+-------------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from NoteCategory;
++---------+-------------+
+| note_id | category_id |
++---------+-------------+
+|       4 |           1 |
+|       5 |           1 |
+|       6 |           1 |
++---------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> delete from Note where note_id in (select note_id from NoteCategory where note_id = 6 and category_id = 1);
+Query OK, 0 rows affected (0.00 sec)
+
+*Create a trigger to delete all matching records from UserNote, NoteReminder and NoteCategory table when :
+    1. A particular note is deleted from Note table (all the matching records from UserNote, NoteReminder and NoteCategory should be removed automatically) 
+
+    mysql> delimiter $$
+mysql> create trigger after_Note_Delete after delete on Note for each row
+    ->      BEGIN 
+    ->      delete from UserNote where note_id = OLD.note_id; 
+    ->      delete from NoteReminder where note_id =  OLD.note_id;
+    ->      delete from NoteCategory where note_id = OLD.note_id;
+    -> END
+    -> $$
+Query OK, 0 rows affected (0.09 sec)
+
+    2. A particular user is deleted from User table (all the matching notes should be removed automatically)
+
+   mysql>  create trigger after_User_Delete after delete on User for each row 
+    ->     BEGIN
+    ->     delete from Note where user_id = OLD.user_id;
+    ->     END
+    -> $$
+
